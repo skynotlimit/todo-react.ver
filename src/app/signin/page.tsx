@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { auth, signIn } from "@/lib/auth";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/shared/ui";
 
 type SearchParams = Promise<{ callbackUrl?: string }>;
 

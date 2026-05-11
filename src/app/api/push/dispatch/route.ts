@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { sendPushToUser } from "@/lib/push";
-import { isRoutineDueOn } from "@/lib/routines";
+import { isRoutineDueOn } from "@/shared/lib/routines";
 
 /**
  * Push reminder dispatch. Call this from a cron (e.g. every minute):

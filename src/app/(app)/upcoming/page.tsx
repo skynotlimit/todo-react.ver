@@ -1,8 +1,8 @@
 import { getTranslations } from "next-intl/server";
 import { requireUserId } from "@/lib/session";
 import { getCategories, getUpcomingTodos } from "@/lib/queries";
-import { TodoComposer } from "@/components/todo/todo-composer";
-import { TodoList } from "@/components/todo/todo-list";
+import { TodoComposer } from "@/features/todo-create";
+import { TodoList } from "@/widgets/todo-list";
 
 export default async function UpcomingPage() {
   const userId = await requireUserId();

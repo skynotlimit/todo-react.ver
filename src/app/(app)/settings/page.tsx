@@ -1,11 +1,13 @@
 import { cookies } from "next/headers";
 import { getTranslations } from "next-intl/server";
 import { auth } from "@/lib/auth";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ThemeToggle } from "@/components/settings/theme-toggle";
-import { LocaleSelect } from "@/components/settings/locale-select";
-import { PushToggle } from "@/components/settings/push-toggle";
-import { SignOutButton } from "@/components/settings/sign-out-button";
+import { getQuestStats } from "@/lib/queries";
+import { Card, CardContent, CardHeader, CardTitle } from "@/shared/ui";
+import { ThemeToggle } from "@/features/settings-theme";
+import { LocaleSelect } from "@/features/settings-locale";
+import { PushToggle } from "@/features/settings-push";
+import { SignOutButton } from "@/features/auth-signout";
+import { QuestStatsCard } from "@/widgets/quest-stats";
 
 export default async function SettingsPage() {
   const session = await auth();
@@ -14,6 +16,10 @@ export default async function SettingsPage() {
   const locale = (c.get("locale")?.value as "ko" | "en" | undefined) ?? "ko";
 
   const vapid = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY ?? "";
+
+  const stats = session?.user?.id
+    ? await getQuestStats(session.user.id)
+    : null;
 
   return (
     <div className="space-y-6">
@@ -43,6 +49,8 @@ export default async function SettingsPage() {
           </CardContent>
         </Card>
       )}
+
+      {stats && <QuestStatsCard stats={stats} />}
 
       <Card>
         <CardHeader>

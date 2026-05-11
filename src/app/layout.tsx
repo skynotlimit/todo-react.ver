@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages } from "next-intl/server";
-import { ThemeProvider } from "@/components/theme-provider";
+import { ThemeProvider } from "@/app/providers";
 import "./globals.css";
 
 export const metadata: Metadata = {

@@ -1,5 +1,6 @@
 import { db } from "@/lib/db";
-import { startOfLocalDay, endOfLocalDay, addDays } from "@/lib/utils";
+import { startOfLocalDay, endOfLocalDay, addDays } from "@/shared/lib/utils";
+import { xpOf } from "@/shared/lib/quest";
 
 const todoInclude = {
   category: true,
@@ -62,6 +63,23 @@ export async function getCompletedTodos(userId: string) {
   });
 }
 
+export async function getCompletedTodosInMonth(
+  userId: string,
+  year: number,
+  month: number,
+) {
+  const start = new Date(year, month - 1, 1);
+  const end = new Date(year, month, 1);
+  return db.todo.findMany({
+    where: {
+      userId,
+      completedAt: { gte: start, lt: end },
+    },
+    orderBy: { completedAt: "desc" },
+    include: todoInclude,
+  });
+}
+
 export async function getCategories(userId: string) {
   return db.category.findMany({
     where: { userId },
@@ -82,6 +100,33 @@ export async function getRoutines(userId: string) {
     orderBy: [{ active: "desc" }, { createdAt: "asc" }],
     include: { category: true },
   });
+}
+
+export type QuestStats = {
+  totalQuests: number;
+  totalXp: number;
+  byPriority: { LOW: number; MEDIUM: number; HIGH: number };
+};
+
+export async function getQuestStats(userId: string): Promise<QuestStats> {
+  const rows = await db.todo.groupBy({
+    by: ["priority"],
+    where: { userId, completedAt: { not: null } },
+    _count: { _all: true },
+  });
+  const byPriority = { LOW: 0, MEDIUM: 0, HIGH: 0 };
+  for (const r of rows) byPriority[r.priority] = r._count._all;
+  const totalQuests = byPriority.LOW + byPriority.MEDIUM + byPriority.HIGH;
+  const totalXp =
+    byPriority.LOW * xpOf.LOW +
+    byPriority.MEDIUM * xpOf.MEDIUM +
+    byPriority.HIGH * xpOf.HIGH;
+  return { totalQuests, totalXp, byPriority };
+}
+
+export async function getTotalXp(userId: string): Promise<number> {
+  const { totalXp } = await getQuestStats(userId);
+  return totalXp;
 }
 
 export async function getRoutinesForToday(userId: string) {

@@ -1,7 +1,7 @@
 import { getTranslations } from "next-intl/server";
 import { requireUserId } from "@/lib/session";
 import { getCategories } from "@/lib/queries";
-import { CategoryManager } from "@/components/category/category-manager";
+import { CategoryManager } from "@/features/category-manage";
 
 export default async function CategoriesPage() {
   const userId = await requireUserId();
