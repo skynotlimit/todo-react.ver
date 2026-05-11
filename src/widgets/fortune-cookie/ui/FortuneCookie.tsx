@@ -18,7 +18,11 @@ export function FortuneCookie({ userId }: { userId: string }) {
     author?: string;
   } | null>(null);
 
-  // Show on first visit per local-day per user.
+  // Show on first visit per local-day per user. This is a legitimate effect
+  // — it reads from localStorage (external state) and may schedule a one-time
+  // appearance. The React 19 set-state-in-effect rule's concern (cascading
+  // renders from derived state) doesn't apply here.
+  /* eslint-disable react-hooks/set-state-in-effect */
   React.useEffect(() => {
     const key = `${STORAGE_PREFIX}${userId}:${todayKey()}`;
     if (typeof window === "undefined") return;
@@ -28,6 +32,7 @@ export function FortuneCookie({ userId }: { userId: string }) {
     const t = setTimeout(() => setOpen(true), 350);
     return () => clearTimeout(t);
   }, [locale, userId]);
+  /* eslint-enable react-hooks/set-state-in-effect */
 
   function close() {
     const key = `${STORAGE_PREFIX}${userId}:${todayKey()}`;

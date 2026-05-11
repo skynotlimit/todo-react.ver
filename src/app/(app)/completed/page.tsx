@@ -25,6 +25,7 @@ export default async function CompletedPage({
         {t("nav.completed")}
       </h1>
       <CompletedCalendar
+        key={`${year}-${month}`}
         todos={todos}
         categories={categories}
         year={year}
