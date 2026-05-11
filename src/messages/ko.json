@@ -1,0 +1,129 @@
+{
+  "app": {
+    "name": "데일리 투두",
+    "tagline": "오늘 할 일에 집중하세요"
+  },
+  "auth": {
+    "signIn": "로그인",
+    "signOut": "로그아웃",
+    "signInWithGoogle": "Google로 로그인",
+    "signInRequired": "이 앱을 사용하려면 로그인이 필요합니다.",
+    "welcome": "환영합니다, {name}님"
+  },
+  "nav": {
+    "today": "오늘",
+    "upcoming": "예정",
+    "all": "전체",
+    "routines": "루틴",
+    "completed": "완료",
+    "categories": "카테고리",
+    "tags": "태그",
+    "settings": "설정"
+  },
+  "todo": {
+    "title": "할 일",
+    "newPlaceholder": "새 할 일을 입력하고 Enter…",
+    "addButton": "추가",
+    "empty": "오늘 할 일이 없습니다 ✨",
+    "delete": "삭제",
+    "edit": "수정",
+    "save": "저장",
+    "cancel": "취소",
+    "notes": "메모",
+    "due": "마감",
+    "noDue": "마감 없음",
+    "priority": "우선순위",
+    "category": "카테고리",
+    "tags": "태그",
+    "complete": "완료",
+    "uncomplete": "되돌리기",
+    "filterAll": "전체",
+    "filterActive": "진행중",
+    "filterCompleted": "완료",
+    "tooMany": "오늘 할 일이 너무 많네요. 우선순위를 정해보세요."
+  },
+  "priority": {
+    "LOW": "낮음",
+    "MEDIUM": "보통",
+    "HIGH": "높음"
+  },
+  "quest": {
+    "newQuest": "새 퀘스트 등록",
+    "accept": "수락하기",
+    "complete": "완료하기",
+    "undo": "되돌리기",
+    "dailyProgress": "오늘의 퀘스트 진행도",
+    "noNotes": "메모 없음",
+    "due": "마감",
+    "dueNone": "없음",
+    "dueToday": "오늘",
+    "dueTomorrow": "내일",
+    "dueCustom": "직접 지정"
+  },
+  "fortune": {
+    "title": "오늘의 한마디",
+    "tap": "쿠키를 탭해서 깨보세요",
+    "ok": "좋아요!"
+  },
+  "routine": {
+    "title": "반복 루틴",
+    "new": "새 루틴",
+    "freq": "반복 주기",
+    "freqDaily": "매일",
+    "freqWeekly": "매주",
+    "freqMonthly": "매월",
+    "weekdays": "요일",
+    "monthDay": "매월 {day}일",
+    "timeOfDay": "시각",
+    "remindBefore": "리마인더 (분 전)",
+    "active": "활성",
+    "inactive": "비활성",
+    "skip": "건너뛰기",
+    "today": "오늘 루틴",
+    "completedFor": "{date} 완료",
+    "weekday": {
+      "0": "월",
+      "1": "화",
+      "2": "수",
+      "3": "목",
+      "4": "금",
+      "5": "토",
+      "6": "일"
+    }
+  },
+  "category": {
+    "title": "카테고리",
+    "new": "새 카테고리",
+    "name": "이름",
+    "color": "색상",
+    "none": "없음"
+  },
+  "tag": {
+    "title": "태그",
+    "new": "새 태그",
+    "addPlaceholder": "태그 추가…"
+  },
+  "common": {
+    "loading": "불러오는 중…",
+    "saving": "저장 중…",
+    "deleted": "삭제됨",
+    "confirmDelete": "정말 삭제하시겠어요?",
+    "yes": "예",
+    "no": "아니오",
+    "today": "오늘",
+    "yesterday": "어제",
+    "tomorrow": "내일",
+    "language": "언어",
+    "theme": "테마",
+    "themeLight": "밝게",
+    "themeDark": "어둡게",
+    "themeSystem": "시스템"
+  },
+  "push": {
+    "enable": "푸시 알림 켜기",
+    "disable": "푸시 알림 끄기",
+    "enabled": "알림이 활성화되었습니다",
+    "blocked": "알림이 차단되어 있어요. 브라우저 설정에서 허용해 주세요.",
+    "unsupported": "이 브라우저는 푸시 알림을 지원하지 않습니다."
+  }
+}

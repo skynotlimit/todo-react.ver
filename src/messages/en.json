@@ -1,0 +1,129 @@
+{
+  "app": {
+    "name": "Daily Todo",
+    "tagline": "Focus on what matters today"
+  },
+  "auth": {
+    "signIn": "Sign in",
+    "signOut": "Sign out",
+    "signInWithGoogle": "Sign in with Google",
+    "signInRequired": "Please sign in to use this app.",
+    "welcome": "Welcome, {name}"
+  },
+  "nav": {
+    "today": "Today",
+    "upcoming": "Upcoming",
+    "all": "All",
+    "routines": "Routines",
+    "completed": "Completed",
+    "categories": "Categories",
+    "tags": "Tags",
+    "settings": "Settings"
+  },
+  "todo": {
+    "title": "Todos",
+    "newPlaceholder": "Add a todo and press Enter…",
+    "addButton": "Add",
+    "empty": "Nothing to do today ✨",
+    "delete": "Delete",
+    "edit": "Edit",
+    "save": "Save",
+    "cancel": "Cancel",
+    "notes": "Notes",
+    "due": "Due",
+    "noDue": "No due date",
+    "priority": "Priority",
+    "category": "Category",
+    "tags": "Tags",
+    "complete": "Complete",
+    "uncomplete": "Undo",
+    "filterAll": "All",
+    "filterActive": "Active",
+    "filterCompleted": "Completed",
+    "tooMany": "That's a lot for today. Consider prioritizing."
+  },
+  "priority": {
+    "LOW": "Low",
+    "MEDIUM": "Medium",
+    "HIGH": "High"
+  },
+  "quest": {
+    "newQuest": "New quest",
+    "accept": "Accept",
+    "complete": "Complete",
+    "undo": "Undo",
+    "dailyProgress": "Today's quest progress",
+    "noNotes": "No notes",
+    "due": "Due",
+    "dueNone": "None",
+    "dueToday": "Today",
+    "dueTomorrow": "Tomorrow",
+    "dueCustom": "Custom"
+  },
+  "fortune": {
+    "title": "Today's fortune",
+    "tap": "Tap to crack the cookie",
+    "ok": "Thanks!"
+  },
+  "routine": {
+    "title": "Routines",
+    "new": "New routine",
+    "freq": "Frequency",
+    "freqDaily": "Daily",
+    "freqWeekly": "Weekly",
+    "freqMonthly": "Monthly",
+    "weekdays": "Weekdays",
+    "monthDay": "Day {day} of every month",
+    "timeOfDay": "Time",
+    "remindBefore": "Remind (min before)",
+    "active": "Active",
+    "inactive": "Inactive",
+    "skip": "Skip",
+    "today": "Today's routines",
+    "completedFor": "Completed for {date}",
+    "weekday": {
+      "0": "Mon",
+      "1": "Tue",
+      "2": "Wed",
+      "3": "Thu",
+      "4": "Fri",
+      "5": "Sat",
+      "6": "Sun"
+    }
+  },
+  "category": {
+    "title": "Categories",
+    "new": "New category",
+    "name": "Name",
+    "color": "Color",
+    "none": "None"
+  },
+  "tag": {
+    "title": "Tags",
+    "new": "New tag",
+    "addPlaceholder": "Add a tag…"
+  },
+  "common": {
+    "loading": "Loading…",
+    "saving": "Saving…",
+    "deleted": "Deleted",
+    "confirmDelete": "Delete this?",
+    "yes": "Yes",
+    "no": "No",
+    "today": "Today",
+    "yesterday": "Yesterday",
+    "tomorrow": "Tomorrow",
+    "language": "Language",
+    "theme": "Theme",
+    "themeLight": "Light",
+    "themeDark": "Dark",
+    "themeSystem": "System"
+  },
+  "push": {
+    "enable": "Enable push",
+    "disable": "Disable push",
+    "enabled": "Notifications enabled",
+    "blocked": "Notifications are blocked. Allow them in browser settings.",
+    "unsupported": "This browser doesn't support push notifications."
+  }
+}

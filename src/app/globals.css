@@ -1,26 +1,268 @@
 @import "tailwindcss";
 
+@theme {
+  --font-sans: "Pretendard Variable", "Pretendard", -apple-system, BlinkMacSystemFont,
+    system-ui, "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic",
+    Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: 255 255 255;
+  --foreground: 23 23 23;
+  --muted: 245 245 245;
+  --muted-foreground: 115 115 115;
+  --card: 255 255 255;
+  --card-foreground: 23 23 23;
+  --border: 229 229 229;
+  --input: 229 229 229;
+  --primary: 24 24 27;
+  --primary-foreground: 250 250 250;
+  --accent: 244 244 245;
+  --accent-foreground: 24 24 27;
+  --destructive: 220 38 38;
+  --destructive-foreground: 255 255 255;
+  --ring: 24 24 27;
+  --p-low: 156 163 175;
+  --p-mid: 59 130 246;
+  --p-high: 239 68 68;
+  /* Quest rarity tiers (light) */
+  --rarity-common: 100 116 139;        /* slate-500 */
+  --rarity-common-bg: 241 245 249;     /* slate-100 */
+  --rarity-rare: 37 99 235;            /* blue-600 */
+  --rarity-rare-bg: 219 234 254;       /* blue-100 */
+  --rarity-epic: 147 51 234;           /* purple-600 */
+  --rarity-epic-bg: 243 232 255;       /* purple-100 */
+}
+
+.dark {
+  --background: 9 9 11;
+  --foreground: 250 250 250;
+  --muted: 24 24 27;
+  --muted-foreground: 161 161 170;
+  --card: 18 18 20;
+  --card-foreground: 250 250 250;
+  --border: 39 39 42;
+  --input: 39 39 42;
+  --primary: 250 250 250;
+  --primary-foreground: 24 24 27;
+  --accent: 39 39 42;
+  --accent-foreground: 250 250 250;
+  --destructive: 248 113 113;
+  --destructive-foreground: 24 24 27;
+  --ring: 212 212 216;
+  /* Quest rarity tiers (dark) */
+  --rarity-common: 148 163 184;        /* slate-400 */
+  --rarity-common-bg: 30 41 59;        /* slate-800 */
+  --rarity-rare: 96 165 250;           /* blue-400 */
+  --rarity-rare-bg: 23 37 84;          /* blue-950 */
+  --rarity-epic: 192 132 252;          /* purple-400 */
+  --rarity-epic-bg: 59 7 100;          /* purple-950 */
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-background: rgb(var(--background));
+  --color-foreground: rgb(var(--foreground));
+  --color-muted: rgb(var(--muted));
+  --color-muted-foreground: rgb(var(--muted-foreground));
+  --color-card: rgb(var(--card));
+  --color-card-foreground: rgb(var(--card-foreground));
+  --color-border: rgb(var(--border));
+  --color-input: rgb(var(--input));
+  --color-primary: rgb(var(--primary));
+  --color-primary-foreground: rgb(var(--primary-foreground));
+  --color-accent: rgb(var(--accent));
+  --color-accent-foreground: rgb(var(--accent-foreground));
+  --color-destructive: rgb(var(--destructive));
+  --color-destructive-foreground: rgb(var(--destructive-foreground));
+  --color-ring: rgb(var(--ring));
+  --color-p-low: rgb(var(--p-low));
+  --color-p-mid: rgb(var(--p-mid));
+  --color-p-high: rgb(var(--p-high));
+  --color-rarity-common: rgb(var(--rarity-common));
+  --color-rarity-common-bg: rgb(var(--rarity-common-bg));
+  --color-rarity-rare: rgb(var(--rarity-rare));
+  --color-rarity-rare-bg: rgb(var(--rarity-rare-bg));
+  --color-rarity-epic: rgb(var(--rarity-epic));
+  --color-rarity-epic-bg: rgb(var(--rarity-epic-bg));
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  border-color: rgb(var(--border));
+}
+
+html,
+body {
+  background: rgb(var(--background));
+  color: rgb(var(--foreground));
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: "ss01", "cv01";
+}
+
+/* tiny scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgb(var(--border));
+  border-radius: 6px;
+}
+
+/* line-through animation for completion */
+.completed-strike {
+  text-decoration: line-through;
+  text-decoration-thickness: 1.5px;
+  color: rgb(var(--muted-foreground));
+}
+
+/* ─── Quest card (TCG portrait) ──────────────────────────────────────── */
+.quest-card {
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease,
+    border-color 0.2s ease, opacity 0.25s ease;
+  /* Rarity-tinted outer frame */
+  background: linear-gradient(
+    160deg,
+    rgb(var(--rarity-bg)) 0%,
+    rgb(var(--card)) 35%,
+    rgb(var(--card)) 100%
+  );
+  border-color: rgb(var(--rarity) / 0.55);
+}
+.quest-card:hover {
+  transform: translateY(-2px) rotate(-0.3deg);
+  box-shadow: 0 14px 30px -10px rgb(var(--rarity) / 0.45);
+  border-color: rgb(var(--rarity));
+}
+.quest-card.is-epic:hover {
+  box-shadow: 0 18px 36px -10px rgb(var(--rarity) / 0.55);
+}
+.quest-card.is-completed {
+  filter: saturate(0.4);
+  opacity: 0.75;
+}
+
+/* Card art window (big illustration area) */
+.quest-art {
+  position: relative;
+  background:
+    radial-gradient(
+      circle at 50% 35%,
+      rgb(var(--rarity) / 0.35) 0%,
+      rgb(var(--rarity-bg)) 50%,
+      rgb(var(--rarity-bg) / 0.6) 100%
+    );
+  overflow: hidden;
+}
+.quest-art::after {
+  /* Subtle holographic shimmer line */
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    115deg,
+    transparent 30%,
+    rgb(255 255 255 / 0.18) 45%,
+    transparent 60%
+  );
+  pointer-events: none;
+}
+.dark .quest-art::after {
+  background: linear-gradient(
+    115deg,
+    transparent 30%,
+    rgb(255 255 255 / 0.06) 45%,
+    transparent 60%
+  );
+}
+
+/* Diagonal "COMPLETED" stamp — wax-stamp red */
+.completed-stamp {
+  position: absolute;
+  top: 38%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-18deg);
+  padding: 8px 22px;
+  border: 4px solid rgb(220 28 28);
+  color: rgb(220 28 28);
+  font-weight: 900;
+  letter-spacing: 0.22em;
+  font-size: 1.05rem;
+  border-radius: 6px;
+  background: rgb(255 255 255 / 0.78);
+  text-shadow: 0 1px 0 rgb(255 255 255 / 0.6);
+  box-shadow:
+    0 2px 4px rgb(220 28 28 / 0.25),
+    inset 0 0 0 1px rgb(220 28 28 / 0.4);
+  pointer-events: none;
+  z-index: 10;
+}
+.dark .completed-stamp {
+  border-color: rgb(248 70 70);
+  color: rgb(248 70 70);
+  background: rgb(40 0 0 / 0.55);
+  text-shadow: 0 1px 0 rgb(0 0 0 / 0.6);
+  box-shadow:
+    0 2px 4px rgb(248 70 70 / 0.35),
+    inset 0 0 0 1px rgb(248 70 70 / 0.5);
+}
+
+/* Completion burst — fires once when toggled to complete */
+@keyframes quest-burst {
+  0% { transform: scale(1); }
+  35% { transform: scale(1.04); box-shadow: 0 0 0 8px rgb(var(--rarity) / 0.25); }
+  100% { transform: scale(1); box-shadow: 0 0 0 0 rgb(var(--rarity) / 0); }
+}
+.quest-burst {
+  animation: quest-burst 0.55s ease-out;
+}
+
+/* XP gem gentle pulse */
+@keyframes gem-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+}
+.quest-gem {
+  animation: gem-pulse 2.4s ease-in-out infinite;
+}
+
+/* ─── Fortune cookie ─────────────────────────────────────────────────── */
+@keyframes cookie-wiggle {
+  0%, 100% { transform: rotate(-3deg); }
+  50%      { transform: rotate(3deg); }
+}
+.cookie-wiggle {
+  animation: cookie-wiggle 1.6s ease-in-out infinite;
+  transform-origin: 50% 60%;
+}
+@keyframes cookie-shake {
+  0%, 100% { transform: translateX(0) rotate(0); }
+  20%      { transform: translateX(-6px) rotate(-4deg); }
+  40%      { transform: translateX(6px)  rotate(4deg); }
+  60%      { transform: translateX(-4px) rotate(-2deg); }
+  80%      { transform: translateX(4px)  rotate(2deg); }
+}
+.cookie-shake {
+  animation: cookie-shake 0.45s ease-in-out;
+}
+@keyframes fortune-rise {
+  0%   { opacity: 0; transform: translateY(12px) scale(0.96); }
+  100% { opacity: 1; transform: translateY(0)    scale(1); }
+}
+.fortune-rise {
+  animation: fortune-rise 0.5s ease-out both;
+}
+
+/* Larger tap targets on coarse pointers (touch) */
+@media (pointer: coarse) {
+  .tap-44 { min-height: 44px; min-width: 44px; }
 }
