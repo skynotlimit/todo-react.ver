@@ -2,6 +2,8 @@
 import * as React from "react";
 import { useTransition } from "react";
 import { useTranslations } from "next-intl";
+import { useForm, Controller } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Plus, Trash2, Power } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -13,6 +15,10 @@ import {
   deleteRoutine,
   updateRoutine,
 } from "@/app/actions/routines";
+import {
+  RoutineFormSchema,
+  type RoutineFormValues,
+} from "@/schemas/routine";
 import { isoDate } from "@/lib/utils";
 import { cn } from "@/lib/utils";
 
@@ -26,7 +32,7 @@ type Routine = {
   byMonthDay: number | null;
   timeOfDay: string | null;
   remindBefore: number | null;
-  startDate: string; // ISO date
+  startDate: string;
   endDate: string | null;
   active: boolean;
   categoryId: string | null;
@@ -66,13 +72,49 @@ export function RoutineManager({
 function NewRoutineForm({ categories }: { categories: CategoryLite[] }) {
   const t = useTranslations();
   const [open, setOpen] = React.useState(false);
-  const [title, setTitle] = React.useState("");
-  const [freq, setFreq] = React.useState<"DAILY" | "WEEKLY" | "MONTHLY">("DAILY");
-  const [byWeekday, setByWeekday] = React.useState<number>(127);
-  const [byMonthDay, setByMonthDay] = React.useState<number>(1);
-  const [timeOfDay, setTimeOfDay] = React.useState("");
-  const [categoryId, setCategoryId] = React.useState("");
   const [isPending, start] = useTransition();
+
+  // The form bag holds ALL freq-related fields at once (byWeekday, byMonthDay,
+  // timeOfDay, endDate). zod's superRefine decides which are required for the
+  // chosen freq, and the submit handler strips the irrelevant ones before
+  // sending to the server action.
+  const form = useForm<RoutineFormValues>({
+    resolver: zodResolver(RoutineFormSchema),
+    defaultValues: {
+      title: "",
+      freq: "DAILY",
+      byWeekday: 127, // all weekdays
+      byMonthDay: 1,
+      timeOfDay: "",
+      startDate: isoDate(new Date()),
+      endDate: "",
+      categoryId: "",
+    },
+  });
+
+  // `watch` re-renders this component whenever `freq` changes — that's how we
+  // get the conditional UI without setState/useEffect plumbing.
+  const freq = form.watch("freq");
+  const errors = form.formState.errors;
+
+  function onSubmit(values: RoutineFormValues) {
+    start(async () => {
+      // Form bag → server action shape. Drop fields that don't apply to the
+      // chosen freq; convert empty strings to null where the server expects.
+      await createRoutine({
+        title: values.title,
+        freq: values.freq,
+        byWeekday: values.freq === "WEEKLY" ? values.byWeekday : undefined,
+        byMonthDay: values.freq === "MONTHLY" ? values.byMonthDay : null,
+        timeOfDay: values.timeOfDay || null,
+        startDate: values.startDate,
+        endDate: values.endDate || null,
+        categoryId: values.categoryId || null,
+      });
+      form.reset();
+      setOpen(false);
+    });
+  }
 
   if (!open) {
     return (
@@ -84,100 +126,150 @@ function NewRoutineForm({ categories }: { categories: CategoryLite[] }) {
 
   return (
     <Card>
-      <CardContent className="space-y-3">
-        <Input
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          placeholder={t("routine.new")}
-          autoFocus
-        />
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-          <label className="space-y-1 text-xs">
-            <span className="text-muted-foreground">{t("routine.freq")}</span>
-            <Select
-              value={freq}
-              onChange={(e) => setFreq(e.target.value as typeof freq)}
-            >
-              <option value="DAILY">{t("routine.freqDaily")}</option>
-              <option value="WEEKLY">{t("routine.freqWeekly")}</option>
-              <option value="MONTHLY">{t("routine.freqMonthly")}</option>
-            </Select>
-          </label>
-          <label className="space-y-1 text-xs">
-            <span className="text-muted-foreground">
-              {t("routine.timeOfDay")}
-            </span>
+      <CardContent>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="space-y-3"
+          noValidate
+        >
+          <div>
             <Input
-              type="time"
-              value={timeOfDay}
-              onChange={(e) => setTimeOfDay(e.target.value)}
+              {...form.register("title")}
+              placeholder={t("routine.new")}
+              autoFocus
+              aria-invalid={!!errors.title}
             />
-          </label>
-          {categories.length > 0 && (
+            {errors.title && (
+              <p className="mt-1 text-xs text-destructive">
+                {t("routine.errors.title")}
+              </p>
+            )}
+          </div>
+
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
             <label className="space-y-1 text-xs">
-              <span className="text-muted-foreground">
-                {t("todo.category")}
-              </span>
-              <Select
-                value={categoryId}
-                onChange={(e) => setCategoryId(e.target.value)}
-              >
-                <option value="">{t("category.none")}</option>
-                {categories.map((c) => (
-                  <option key={c.id} value={c.id}>
-                    {c.name}
-                  </option>
-                ))}
+              <span className="text-muted-foreground">{t("routine.freq")}</span>
+              <Select {...form.register("freq")}>
+                <option value="DAILY">{t("routine.freqDaily")}</option>
+                <option value="WEEKLY">{t("routine.freqWeekly")}</option>
+                <option value="MONTHLY">{t("routine.freqMonthly")}</option>
               </Select>
             </label>
+
+            <label className="space-y-1 text-xs">
+              <span className="text-muted-foreground">
+                {t("routine.timeOfDay")}
+              </span>
+              <Input type="time" {...form.register("timeOfDay")} />
+            </label>
+
+            {categories.length > 0 && (
+              <label className="space-y-1 text-xs">
+                <span className="text-muted-foreground">
+                  {t("todo.category")}
+                </span>
+                <Select {...form.register("categoryId")}>
+                  <option value="">{t("category.none")}</option>
+                  {categories.map((c) => (
+                    <option key={c.id} value={c.id}>
+                      {c.name}
+                    </option>
+                  ))}
+                </Select>
+              </label>
+            )}
+          </div>
+
+          <div className="grid grid-cols-2 gap-2">
+            <label className="space-y-1 text-xs">
+              <span className="text-muted-foreground">
+                {t("routine.startDate")}
+              </span>
+              <Input
+                type="date"
+                {...form.register("startDate")}
+                aria-invalid={!!errors.startDate}
+              />
+            </label>
+            <label className="space-y-1 text-xs">
+              <span className="text-muted-foreground">
+                {t("routine.endDate")}
+              </span>
+              <Input
+                type="date"
+                {...form.register("endDate")}
+                aria-invalid={!!errors.endDate}
+              />
+            </label>
+          </div>
+          {errors.endDate && (
+            <p className="text-xs text-destructive">
+              {t("routine.errors.endBeforeStart")}
+            </p>
           )}
-        </div>
 
-        {freq === "WEEKLY" && (
-          <WeekdayPicker value={byWeekday} onChange={setByWeekday} />
-        )}
-        {freq === "MONTHLY" && (
-          <label className="space-y-1 text-xs">
-            <span className="text-muted-foreground">
-              {t("routine.monthDay", { day: byMonthDay })}
-            </span>
-            <Input
-              type="number"
-              min={1}
-              max={31}
-              value={byMonthDay}
-              onChange={(e) =>
-                setByMonthDay(Math.max(1, Math.min(31, +e.target.value || 1)))
-              }
-            />
-          </label>
-        )}
+          {/* Conditional fields driven by `watch("freq")`. */}
+          {freq === "WEEKLY" && (
+            <div>
+              {/* Controller is RHF's escape hatch for inputs that can't be wired
+                with plain `register` — here, our custom WeekdayPicker takes
+                `value` + `onChange` rather than DOM events. */}
+              <Controller
+                control={form.control}
+                name="byWeekday"
+                render={({ field }) => (
+                  <WeekdayPicker
+                    value={field.value}
+                    onChange={field.onChange}
+                  />
+                )}
+              />
+              {errors.byWeekday && (
+                <p className="mt-1 text-xs text-destructive">
+                  {t("routine.errors.weekdayAtLeastOne")}
+                </p>
+              )}
+            </div>
+          )}
 
-        <div className="flex justify-end gap-2">
-          <Button variant="ghost" onClick={() => setOpen(false)}>
-            {t("todo.cancel")}
-          </Button>
-          <Button
-            disabled={!title.trim() || isPending}
-            onClick={() =>
-              start(async () => {
-                await createRoutine({
-                  title,
-                  freq,
-                  byWeekday: freq === "WEEKLY" ? byWeekday : undefined,
-                  byMonthDay: freq === "MONTHLY" ? byMonthDay : null,
-                  timeOfDay: timeOfDay || null,
-                  startDate: isoDate(new Date()),
-                  categoryId: categoryId || null,
-                });
-                setTitle("");
+          {freq === "MONTHLY" && (
+            <label className="space-y-1 text-xs block">
+              <span className="text-muted-foreground">
+                {t("routine.monthDay", {
+                  day: form.watch("byMonthDay") || 1,
+                })}
+              </span>
+              {/* register() supports valueAsNumber for numeric inputs — without
+                it the value comes back as a string and zod's `number()` fails. */}
+              <Input
+                type="number"
+                min={1}
+                max={31}
+                {...form.register("byMonthDay", { valueAsNumber: true })}
+                aria-invalid={!!errors.byMonthDay}
+              />
+            </label>
+          )}
+
+          <div className="flex justify-end gap-2">
+            <Button
+              type="button"
+              variant="ghost"
+              onClick={() => {
+                form.reset();
                 setOpen(false);
-              })
-            }
-          >
-            {t("todo.save")}
-          </Button>
-        </div>
+              }}
+            >
+              {t("todo.cancel")}
+            </Button>
+            <Button
+              type="submit"
+              disabled={isPending || form.formState.isSubmitting}
+            >
+              {t("todo.save")}
+            </Button>
+          </div>
+        </form>
       </CardContent>
     </Card>
   );
@@ -217,7 +309,7 @@ function WeekdayPicker({
 
 function RoutineCard({
   routine,
-  categories,
+  categories: _categories,
 }: {
   routine: Routine;
   categories: CategoryLite[];

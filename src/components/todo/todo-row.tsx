@@ -200,7 +200,7 @@ export function TodoRow({
           onClick={onComplete}
           disabled={isPending}
           className={cn(
-            "tap-44 flex-1 h-11 rounded-lg font-bold tracking-wider text-sm",
+            "tap-44 flex-1 h-11 rounded-lg font-bold text-xs whitespace-nowrap",
             completed
               ? "bg-muted text-muted-foreground hover:bg-muted"
               : "text-white shadow-md",

@@ -10,6 +10,14 @@
     "signInRequired": "이 앱을 사용하려면 로그인이 필요합니다.",
     "welcome": "환영합니다, {name}님"
   },
+  "user": {
+    "totalXp": "총 {xp} XP"
+  },
+  "stats": {
+    "title": "내 모험",
+    "totalQuests": "완료한 퀘스트",
+    "totalXp": "획득한 XP"
+  },
   "nav": {
     "today": "오늘",
     "upcoming": "예정",
@@ -76,11 +84,18 @@
     "monthDay": "매월 {day}일",
     "timeOfDay": "시각",
     "remindBefore": "리마인더 (분 전)",
+    "startDate": "시작일",
+    "endDate": "종료일",
     "active": "활성",
     "inactive": "비활성",
     "skip": "건너뛰기",
     "today": "오늘 루틴",
     "completedFor": "{date} 완료",
+    "errors": {
+      "title": "제목을 입력해주세요.",
+      "weekdayAtLeastOne": "최소 하나의 요일을 선택해주세요.",
+      "endBeforeStart": "종료일은 시작일보다 같거나 뒤여야 합니다."
+    },
     "weekday": {
       "0": "월",
       "1": "화",
@@ -96,7 +111,10 @@
     "new": "새 카테고리",
     "name": "이름",
     "color": "색상",
-    "none": "없음"
+    "none": "없음",
+    "errors": {
+      "name": "이름은 1~40자로 입력해주세요."
+    }
   },
   "tag": {
     "title": "태그",
@@ -113,11 +131,19 @@
     "today": "오늘",
     "yesterday": "어제",
     "tomorrow": "내일",
+    "close": "닫기",
     "language": "언어",
     "theme": "테마",
     "themeLight": "밝게",
     "themeDark": "어둡게",
     "themeSystem": "시스템"
+  },
+  "completed": {
+    "monthLabel": "{year}년 {month}월",
+    "prevMonth": "이전 달",
+    "nextMonth": "다음 달",
+    "selectDate": "날짜를 선택하면 그날 완료한 항목이 표시됩니다.",
+    "panelHeader": "{month}월 {day}일 ({weekday})"
   },
   "push": {
     "enable": "푸시 알림 켜기",

@@ -10,6 +10,14 @@
     "signInRequired": "Please sign in to use this app.",
     "welcome": "Welcome, {name}"
   },
+  "user": {
+    "totalXp": "{xp} XP total"
+  },
+  "stats": {
+    "title": "Your adventure",
+    "totalQuests": "Completed quests",
+    "totalXp": "XP earned"
+  },
   "nav": {
     "today": "Today",
     "upcoming": "Upcoming",
@@ -76,11 +84,18 @@
     "monthDay": "Day {day} of every month",
     "timeOfDay": "Time",
     "remindBefore": "Remind (min before)",
+    "startDate": "Start",
+    "endDate": "End",
     "active": "Active",
     "inactive": "Inactive",
     "skip": "Skip",
     "today": "Today's routines",
     "completedFor": "Completed for {date}",
+    "errors": {
+      "title": "Title is required.",
+      "weekdayAtLeastOne": "Pick at least one weekday.",
+      "endBeforeStart": "End date must be on or after the start date."
+    },
     "weekday": {
       "0": "Mon",
       "1": "Tue",
@@ -96,7 +111,10 @@
     "new": "New category",
     "name": "Name",
     "color": "Color",
-    "none": "None"
+    "none": "None",
+    "errors": {
+      "name": "Name must be 1–40 characters."
+    }
   },
   "tag": {
     "title": "Tags",
@@ -113,11 +131,19 @@
     "today": "Today",
     "yesterday": "Yesterday",
     "tomorrow": "Tomorrow",
+    "close": "Close",
     "language": "Language",
     "theme": "Theme",
     "themeLight": "Light",
     "themeDark": "Dark",
     "themeSystem": "System"
+  },
+  "completed": {
+    "monthLabel": "{month}/{year}",
+    "prevMonth": "Previous month",
+    "nextMonth": "Next month",
+    "selectDate": "Select a day to see what you completed.",
+    "panelHeader": "{month}/{day} ({weekday})"
   },
   "push": {
     "enable": "Enable push",
