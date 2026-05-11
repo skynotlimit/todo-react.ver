@@ -23,15 +23,28 @@ function applyTheme(t: Theme) {
   return resolved;
 }
 
-export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setThemeState] = React.useState<Theme>("system");
-  const [resolved, setResolved] = React.useState<"light" | "dark">("light");
+function readStoredTheme(): Theme {
+  if (typeof window === "undefined") return "system";
+  return (localStorage.getItem("theme") as Theme | null) ?? "system";
+}
 
+function resolveInitial(): "light" | "dark" {
+  if (typeof window === "undefined") return "light";
+  const stored = readStoredTheme();
+  return stored === "system" ? getSystem() : stored;
+}
+
+export function ThemeProvider({ children }: { children: React.ReactNode }) {
+  // Lazy initial state reads localStorage on first render instead of doing it
+  // in a useEffect — avoids the React 19 set-state-in-effect rule.
+  const [theme, setThemeState] = React.useState<Theme>(readStoredTheme);
+  const [resolved, setResolved] = React.useState<"light" | "dark">(resolveInitial);
+
+  // Sync the html class to the resolved theme on every change (including mount).
+  // This is a legitimate effect — we're updating an external system (the DOM).
   React.useEffect(() => {
-    const stored = (localStorage.getItem("theme") as Theme | null) ?? "system";
-    setThemeState(stored);
-    setResolved(applyTheme(stored));
-  }, []);
+    document.documentElement.classList.toggle("dark", resolved === "dark");
+  }, [resolved]);
 
   React.useEffect(() => {
     if (theme !== "system") return;

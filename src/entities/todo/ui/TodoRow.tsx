@@ -13,19 +13,7 @@ import {
   rarityVars,
   xpOf,
 } from "@/shared/lib/quest";
-
-export type TodoWithRels = {
-  id: string;
-  title: string;
-  notes: string | null;
-  priority: "LOW" | "MEDIUM" | "HIGH";
-  dueAt: Date | null;
-  remindAt: Date | null;
-  completedAt: Date | null;
-  categoryId: string | null;
-  category: { id: string; name: string; color: string } | null;
-  tags: { tag: { id: string; name: string } }[];
-};
+import type { TodoWithRels } from "../model/types";
 
 type CategoryLite = { id: string; name: string; color: string };
 

@@ -1,1 +1,2 @@
-export { TodoRow, type TodoWithRels } from "./ui/TodoRow";
+export { TodoRow } from "./ui/TodoRow";
+export type { TodoWithRels } from "./model/types";

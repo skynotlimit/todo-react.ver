@@ -11,6 +11,11 @@ export function PushToggle({ vapidPublicKey }: { vapidPublicKey: string }) {
   const [state, setState] = React.useState<State>("loading");
   const [busy, setBusy] = React.useState(false);
 
+  // Probe the browser's push subscription state on mount. This is a
+  // legitimate effect — we're syncing React state with an external system
+  // (the service worker registry), so the React 19 set-state-in-effect
+  // warning doesn't apply.
+  /* eslint-disable react-hooks/set-state-in-effect */
   React.useEffect(() => {
     if (
       typeof window === "undefined" ||
@@ -30,6 +35,7 @@ export function PushToggle({ vapidPublicKey }: { vapidPublicKey: string }) {
       .then((sub) => setState(sub ? "subscribed" : "available"))
       .catch(() => setState("available"));
   }, []);
+  /* eslint-enable react-hooks/set-state-in-effect */
 
   async function subscribe() {
     if (!vapidPublicKey) {

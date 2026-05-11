@@ -25,13 +25,10 @@ export function CompletedCalendar({
 }) {
   const t = useTranslations();
   const router = useRouter();
+  // No useEffect to reset selection on month change — the parent passes
+  // `key={`${year}-${month}`}` so this component is remounted when the month
+  // changes, which naturally resets all internal state. (React 19 idiomatic.)
   const [selectedKey, setSelectedKey] = React.useState<string | null>(null);
-
-  // Switching months should clear the selection so the right panel doesn't
-  // dangle a date that belongs to a different month.
-  React.useEffect(() => {
-    setSelectedKey(null);
-  }, [year, month]);
 
   // Group completed todos by local-date key (YYYY-MM-DD).
   const byDay = React.useMemo(() => {
