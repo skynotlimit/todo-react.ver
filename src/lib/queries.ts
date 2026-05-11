@@ -1,6 +1,6 @@
 import { db } from "@/lib/db";
-import { startOfLocalDay, endOfLocalDay, addDays } from "@/lib/utils";
-import { xpOf } from "@/lib/quest";
+import { startOfLocalDay, endOfLocalDay, addDays } from "@/shared/lib/utils";
+import { xpOf } from "@/shared/lib/quest";
 
 const todoInclude = {
   category: true,

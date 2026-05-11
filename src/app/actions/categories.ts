@@ -6,7 +6,7 @@ import { requireUserId } from "@/lib/session";
 import {
   CategoryFormSchema,
   type CategoryFormValues,
-} from "@/schemas/category";
+} from "@/shared/schemas/category";
 
 export async function createCategory(input: CategoryFormValues) {
   const userId = await requireUserId();

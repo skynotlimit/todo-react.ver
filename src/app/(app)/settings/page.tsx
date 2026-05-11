@@ -2,12 +2,12 @@ import { cookies } from "next/headers";
 import { getTranslations } from "next-intl/server";
 import { auth } from "@/lib/auth";
 import { getQuestStats } from "@/lib/queries";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ThemeToggle } from "@/components/settings/theme-toggle";
-import { LocaleSelect } from "@/components/settings/locale-select";
-import { PushToggle } from "@/components/settings/push-toggle";
-import { SignOutButton } from "@/components/settings/sign-out-button";
-import { QuestStatsCard } from "@/components/settings/quest-stats-card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/shared/ui";
+import { ThemeToggle } from "@/features/settings-theme";
+import { LocaleSelect } from "@/features/settings-locale";
+import { PushToggle } from "@/features/settings-push";
+import { SignOutButton } from "@/features/auth-signout";
+import { QuestStatsCard } from "@/widgets/quest-stats";
 
 export default async function SettingsPage() {
   const session = await auth();

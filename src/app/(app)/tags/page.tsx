@@ -1,7 +1,7 @@
 import { getTranslations } from "next-intl/server";
 import { requireUserId } from "@/lib/session";
 import { db } from "@/lib/db";
-import { Badge } from "@/components/ui/badge";
+import { Badge } from "@/shared/ui";
 
 export default async function TagsPage() {
   const userId = await requireUserId();

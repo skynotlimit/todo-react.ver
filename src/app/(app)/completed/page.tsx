@@ -1,7 +1,7 @@
 import { getTranslations } from "next-intl/server";
 import { requireUserId } from "@/lib/session";
 import { getCategories, getCompletedTodosInMonth } from "@/lib/queries";
-import { CompletedCalendar } from "@/components/todo/completed-calendar";
+import { CompletedCalendar } from "@/widgets/completed-calendar";
 
 export default async function CompletedPage({
   searchParams,

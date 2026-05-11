@@ -5,12 +5,12 @@ import {
   getRoutinesForToday,
   getTodayTodos,
 } from "@/lib/queries";
-import { isRoutineDueOn } from "@/lib/routines";
-import { endOfLocalDay } from "@/lib/utils";
-import { TodoComposer } from "@/components/todo/todo-composer";
-import { TodoList } from "@/components/todo/todo-list";
-import { DailyProgress } from "@/components/todo/daily-progress";
-import { RoutineToday } from "@/components/routine/routine-today";
+import { isRoutineDueOn } from "@/shared/lib/routines";
+import { endOfLocalDay } from "@/shared/lib/utils";
+import { TodoComposer } from "@/features/todo-create";
+import { TodoList } from "@/widgets/todo-list";
+import { DailyProgress } from "@/widgets/daily-progress";
+import { RoutineToday } from "@/features/routine-complete-today";
 
 export default async function TodayPage() {
   const userId = await requireUserId();

@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
-import { Sidebar } from "@/components/sidebar";
-import { MobileBottomNav } from "@/components/mobile-bottom-nav";
-import { FortuneCookie } from "@/components/fortune-cookie";
+import { Sidebar } from "@/widgets/sidebar";
+import { MobileBottomNav } from "@/widgets/mobile-bottom-nav";
+import { FortuneCookie } from "@/widgets/fortune-cookie";
 import { auth } from "@/lib/auth";
 import { getTotalXp } from "@/lib/queries";
 

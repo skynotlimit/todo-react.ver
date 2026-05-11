@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { db } from "@/lib/db";
 import { requireUserId } from "@/lib/session";
-import { fromIsoDate } from "@/lib/utils";
+import { fromIsoDate } from "@/shared/lib/utils";
 
 const FreqSchema = z.enum(["DAILY", "WEEKLY", "MONTHLY"]);
 const PrioritySchema = z.enum(["LOW", "MEDIUM", "HIGH"]);
