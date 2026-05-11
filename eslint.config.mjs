@@ -10,6 +10,10 @@ import boundaries from "eslint-plugin-boundaries";
 // code (src/lib, server actions inside src/app, proxy.ts). They can reach
 // into any layer, and layered code can reach into them.
 
+const LAYERS = ["app", "widgets", "features", "entities", "shared", "process"];
+// boundaries v6 takes selector objects: allow: [{ to: { type: "shared" } }, ...]
+const to = (types) => types.map((type) => ({ to: { type } }));
+
 const eslintConfig = defineConfig([
   ...nextVitals,
   ...nextTs,
@@ -36,35 +40,17 @@ const eslintConfig = defineConfig([
       ],
     },
     rules: {
-      "boundaries/element-types": [
+      "boundaries/dependencies": [
         "error",
         {
           default: "disallow",
           rules: [
-            {
-              from: "app",
-              allow: ["app", "widgets", "features", "entities", "shared", "process"],
-            },
-            {
-              from: "widgets",
-              allow: ["features", "entities", "shared", "process"],
-            },
-            {
-              from: "features",
-              allow: ["entities", "shared", "process"],
-            },
-            {
-              from: "entities",
-              allow: ["shared", "process"],
-            },
-            {
-              from: "shared",
-              allow: ["shared", "process"],
-            },
-            {
-              from: "process",
-              allow: ["app", "widgets", "features", "entities", "shared", "process"],
-            },
+            { from: { type: "app" }, allow: to(LAYERS) },
+            { from: { type: "widgets" }, allow: to(["features", "entities", "shared", "process"]) },
+            { from: { type: "features" }, allow: to(["entities", "shared", "process"]) },
+            { from: { type: "entities" }, allow: to(["shared", "process"]) },
+            { from: { type: "shared" }, allow: to(["shared", "process"]) },
+            { from: { type: "process" }, allow: to(LAYERS) },
           ],
         },
       ],
