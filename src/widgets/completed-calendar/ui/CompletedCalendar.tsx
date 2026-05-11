@@ -6,6 +6,7 @@ import { useTranslations } from "next-intl";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import { Button } from "@/shared/ui";
 import { TodoRow, type TodoWithRels } from "@/entities/todo";
+import { TodoEditor } from "@/features/todo-edit";
 import { cn } from "@/shared/lib/utils";
 import { isoDate, weekdayIndex } from "@/shared/lib/utils";
 
@@ -174,7 +175,12 @@ export function CompletedCalendar({
             </div>
             <div className="space-y-3">
               {selectedTodos.map((todo) => (
-                <TodoRow key={todo.id} todo={todo} categories={categories} />
+                <TodoRow
+                  key={todo.id}
+                  todo={todo}
+                  categories={categories}
+                  renderEditor={(props) => <TodoEditor {...props} />}
+                />
               ))}
             </div>
           </>

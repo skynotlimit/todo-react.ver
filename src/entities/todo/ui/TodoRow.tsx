@@ -4,7 +4,6 @@ import { useTransition } from "react";
 import { useTranslations } from "next-intl";
 import { Trash2, Pencil, Check, Calendar, Bell } from "lucide-react";
 import { Button } from "@/shared/ui";
-import { TodoEditor } from "@/features/todo-edit";
 import { cn } from "@/shared/lib/utils";
 import { toggleTodo, deleteTodo } from "@/app/actions/todos";
 import {
@@ -30,12 +29,23 @@ export type TodoWithRels = {
 
 type CategoryLite = { id: string; name: string; color: string };
 
+// FSD: an entity must not depend on a feature, so TodoRow can't import
+// TodoEditor (features/todo-edit) directly. The editor is injected by the
+// caller via `renderEditor`. If omitted, the edit button is hidden.
+type RenderEditor = (props: {
+  todo: TodoWithRels;
+  categories: CategoryLite[];
+  onClose: () => void;
+}) => React.ReactNode;
+
 export function TodoRow({
   todo,
   categories,
+  renderEditor,
 }: {
   todo: TodoWithRels;
   categories: CategoryLite[];
+  renderEditor?: RenderEditor;
 }) {
   const t = useTranslations();
   const [isPending, start] = useTransition();
@@ -45,14 +55,12 @@ export function TodoRow({
   const rarity = rarityOf[todo.priority];
   const xp = xpOf[todo.priority];
 
-  if (editing) {
-    return (
-      <TodoEditor
-        todo={todo}
-        categories={categories}
-        onClose={() => setEditing(false)}
-      />
-    );
+  if (editing && renderEditor) {
+    return renderEditor({
+      todo,
+      categories,
+      onClose: () => setEditing(false),
+    });
   }
 
   function onComplete() {

@@ -1,5 +1,6 @@
 import { useTranslations } from "next-intl";
 import { TodoRow, type TodoWithRels } from "@/entities/todo";
+import { TodoEditor } from "@/features/todo-edit";
 
 type CategoryLite = { id: string; name: string; color: string };
 
@@ -18,7 +19,12 @@ export function TodoList({
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
       {todos.map((t) => (
-        <TodoRow key={t.id} todo={t} categories={categories} />
+        <TodoRow
+          key={t.id}
+          todo={t}
+          categories={categories}
+          renderEditor={(props) => <TodoEditor {...props} />}
+        />
       ))}
     </div>
   );
